@@ -44,5 +44,21 @@ class Aviao:
             else:
                 poltrona.semaphore.release()
                 retorno.append(False)
+    
+        return retorno
+
+    def cancela_reserva(self, poltronas_nao_desejadas, identificador):
+        retorno = [] # Lista com True para sucesso e False para fracasso
+
+        for indice in poltronas_nao_desejadas:
+            poltrona = self.poltronas[indice]
+            poltrona.semaphore.acquire()
+            if poltrona.client == identificador:
+                poltrona.client = None
+                poltrona.semaphore.release()
+                retorno.append(True)
+            else:
+                poltrona.semaphore.release()
+                retorno.append(False)
 
         return retorno
