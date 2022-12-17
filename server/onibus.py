@@ -11,9 +11,9 @@ class Poltrona:
             if self.client == None:
                 self.client = client
                 return True
+        # close semaphore
 
         return False
-        # close semaphore
 
 # TODO Talvez dê só para criar a lista sem ter a classe Onibus
 class Onibus:
