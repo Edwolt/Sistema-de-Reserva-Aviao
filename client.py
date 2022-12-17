@@ -5,16 +5,14 @@ import PySimpleGUI as sg
 def create_janela(name):
     layout = [
         [sg.Text("Assentos")],
-        [sg.Text(".", key=f"-ITEM{i}-") for i in range(30)],
-        [sg.Input()],
+        [sg.Button(".", key=("assento", i)) for i in range(30)],
     ]
     return sg.Window(f"Cliente {name}", layout, finalize=True)
 
 
 def update_assentos(janela, data):
     for i, val in enumerate(data):
-        print(i, val)
-        janela[f"-ITEM{i}-"].update(val)
+        janela[("assento", i)].update(val)
 
 
 def client_program():
@@ -30,13 +28,21 @@ def client_program():
 
     while True:
         event, values = janela.read()
-        if event == sg.WIN_CLOSED or values == "Exit":
-            client_socket.send("2".encode())
-            break
 
         client_socket.send("0".encode())
         data = client_socket.recv(1024).decode()
-        print("Atualiza")
+        update_assentos(janela, data)
+
+        if event == sg.WIN_CLOSED or values == "Exit":
+            client_socket.send("Q".encode())
+            break
+
+        if event[0] == "assento":
+            client_socket.send("1{}".format(event[1]).encode())
+            data = client_socket.recv(1024).decode()
+
+        client_socket.send("0".encode())
+        data = client_socket.recv(1024).decode()
         update_assentos(janela, data)
 
     janela.close()
