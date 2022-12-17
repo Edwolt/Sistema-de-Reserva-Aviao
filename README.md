@@ -23,19 +23,25 @@ python 3.10
 
 ## Instalação
 
-Criando ambiente virtual
+Instalando dependências
 ```bash
-python -m venv ./.venv
-source ./.venv/bin/activate
-python -m pip install pip
-pip install -U pip
-```
-
-```bash
-pip install -r requirements.txt
+pip install pysimplegui
 ```
 
 ## Utilização
+
+Ligar o servidor
+```bash
+python3 server.py
+```
+
+Para criar um cliente use
+```bash
+python3 client.py
+```
+O cliente possui uma interface gráfica
+
+Pode se criar quantos clientes quiser
 
 ## Referências
 - [Digital Ocean: Python Socket](https://www.digitalocean.com/community/tutorials/python-socket-programming-server-client)
