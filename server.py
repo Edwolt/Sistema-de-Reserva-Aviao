@@ -27,10 +27,8 @@ def server_program():
             conn2.send(data.encode())
         conn.close()  # close the connection
         conn2.close()
-    except KeyboardInterrupt:
-        pass
-
-    server_socket.shutdown(socket.SHUT_RDWR)
+    finally:
+        server_socket.shutdown(socket.SHUT_RDWR)
 
 if __name__ == '__main__':
     server_program()
