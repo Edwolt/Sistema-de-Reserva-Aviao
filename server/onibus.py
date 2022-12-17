@@ -18,4 +18,4 @@ class Poltrona:
 # TODO Talvez dê só para criar a lista sem ter a classe Onibus
 class Onibus:
     def __init__(self, n=30):
-        self.poltronas = [Poltrona for _ in range(n)]
+        self.poltronas = [Poltrona() for _ in range(n)]
