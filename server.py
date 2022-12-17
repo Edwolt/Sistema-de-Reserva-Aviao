@@ -33,21 +33,21 @@ def server_thread(conn, address, identificador, aviao):
             data = list_to_data(aviao.reserva(data_2_poltronas(data[1:]), identificador)).encode()
         if data[0] == '2':
             break
-        
+
         conn.send(data)  # send data to the client
     conn.close()  # close the connection
 
 def server_program():
     aviao = Aviao()
-    
+
     # get the hostname
     host = socket.gethostname()
     port = 5400  # initiate port no above 1024
-    
+
     server_socket = socket.socket()  # get instance
     # look closely. The bind() function takes tuple as argument
     server_socket.bind((host, port))  # bind host address and port together
-    
+
     try:
        # configure how many client the server can listen simultaneously
        server_socket.listen(10)
@@ -57,7 +57,7 @@ def server_program():
            print("Connection from: " + str(address))
            new_thread = threading.Thread(target = server_thread, args=(conn, address, identificador, aviao))
            new_thread.start()
-           identificador += 1    
+           identificador += 1
     except KeyboardInterrupt:
         pass
 
