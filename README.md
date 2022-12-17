@@ -18,3 +18,5 @@
 ## Utilização 
 
 ## Referências
+https://www.digitalocean.com/community/tutorials/python-socket-programming-server-client(https://www.digitalocean.com/community/tutorials/python-socket-programming-server-client)
+https://realpython.com/intro-to-python-threading/(https://realpython.com/intro-to-python-threading/)
