@@ -9,7 +9,7 @@ def bool_to_data(poltronas):
 
     return res
 
-def data_2_poltronas(data):
+def data_to_poltronas(data):
     return [int(x) for x in data.split(' ')]
 
 def list_to_data(retorno):
@@ -29,9 +29,11 @@ def server_thread(conn, address, identificador, aviao):
         print(f"from {identificador}: {data}")
         if data[0] == '0':
             data = bool_to_data(aviao.livres()).encode()
-        if data[0] == '1':
-            data = list_to_data(aviao.reserva(data_2_poltronas(data[1:]), identificador)).encode()
-        if data[0] == '2':
+        elif data[0] == '1':
+            data = list_to_data(aviao.reserva(data_to_poltronas(data[1:]), identificador)).encode()
+        elif data[0] == '2':
+            data = list_to_data(aviao.cancela_reserva(data_to_poltronas(data[1:]), identificador)).encode()
+        else:
             break
 
         conn.send(data)  # send data to the client
@@ -39,11 +41,11 @@ def server_thread(conn, address, identificador, aviao):
 
 def server_program():
     aviao = Aviao()
-
+    
     # get the hostname
     host = socket.gethostname()
-    port = 5400  # initiate port no above 1024
-
+    port = 5500  # initiate port no above 1024
+    
     server_socket = socket.socket()  # get instance
     # look closely. The bind() function takes tuple as argument
     server_socket.bind((host, port))  # bind host address and port together
@@ -60,9 +62,6 @@ def server_program():
            identificador += 1
     except KeyboardInterrupt:
         pass
-
-    print("exited server...")
-    server_socket.shutdown(socket.SHUT_RDWR)
 
 if __name__ == '__main__':
     server_program()
