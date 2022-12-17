@@ -13,7 +13,21 @@
 
 ## Dependências
 
+python 3.10
+
 ## Instalação
+
+Criando ambiente virtual
+```bash
+python -m venv ./.venv
+source ./.venv/bin/activate
+python -m pip install pip
+pip install -U pip
+```
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Utilização
 
