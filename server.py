@@ -57,9 +57,12 @@ def server_program():
            print("Connection from: " + str(address))
            new_thread = threading.Thread(target = server_thread, args=(conn, address, identificador, aviao))
            new_thread.start()
-           identificador += 1
-    finally:
-        server_socket.shutdown(socket.SHUT_RDWR)
+           identificador += 1    
+    except KeyboardInterrupt:
+        pass
+
+    print("exited server...")
+    server_socket.shutdown(socket.SHUT_RDWR)
 
 if __name__ == '__main__':
     server_program()
