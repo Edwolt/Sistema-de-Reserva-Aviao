@@ -15,9 +15,9 @@
 
 ## Instalação
 
-## Utilização 
+## Utilização
 
 ## Referências
 - [Digital Ocean: Python Socket](https://www.digitalocean.com/community/tutorials/python-socket-programming-server-client)
 - [Real Python: Python Thread](https://realpython.com/intro-to-python-threading/)
-- [Documentação Python do para Threading](https://docs.python.org/3/library/threading.html)
+- [Documentação de Threading do Python](https://docs.python.org/3/library/threading.html)
