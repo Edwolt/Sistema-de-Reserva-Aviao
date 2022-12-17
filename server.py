@@ -20,7 +20,7 @@ def list_to_data(retorno):
     return res
 
 def server_thread(conn, address, identificador, aviao):
-    data = conn.send(bool_to_data(aviao.livres()).encode())
+    conn.send(bool_to_data(aviao.livres()).encode())
 
     while True:
         # receive data stream. it won't accept data packet greater than 1024 bytes
@@ -41,11 +41,11 @@ def server_thread(conn, address, identificador, aviao):
 
 def server_program():
     aviao = Aviao()
-    
+
     # get the hostname
     host = socket.gethostname()
-    port = 5500  # initiate port no above 1024
-    
+    port = 5000  # initiate port no above 1024
+
     server_socket = socket.socket()  # get instance
     # look closely. The bind() function takes tuple as argument
     server_socket.bind((host, port))  # bind host address and port together
@@ -62,6 +62,8 @@ def server_program():
            identificador += 1
     except KeyboardInterrupt:
         pass
+
+    server_socket.shutdown(socket.SHUT_RDWR)
 
 if __name__ == '__main__':
     server_program()

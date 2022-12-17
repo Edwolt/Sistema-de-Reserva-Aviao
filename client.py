@@ -2,35 +2,31 @@ import socket
 import PySimpleGUI as sg
 
 
-class Janela:
-    def __init__(self, name):
-        self.layout = [
-            [sg.Text("Assentos")],
-            [sg.Text(".", key=f"-ITEM{i}-") for i in range(30)],
-            [sg.Input()],
-        ]
-        self.window = sg.Window(f"Cliente {name}", self.layout)
+def create_janela(name):
+    layout = [
+        [sg.Text("Assentos")],
+        [sg.Text(".", key=f"-ITEM{i}-") for i in range(30)],
+        [sg.Input()],
+    ]
+    return sg.Window(f"Cliente {name}", layout, finalize=True)
 
-    def read(self):
-        return self.window.read()
 
-    def update_assentos(self, data):
-        print(data)
-        for i in enumerate(data):
-            print(i)
-            # self.window[f"-ITEM{i}-"].update(i)
+def update_assentos(janela, data):
+    for i, val in enumerate(data):
+        print(i, val)
+        janela[f"-ITEM{i}-"].update(val)
 
 
 def client_program():
     host = socket.gethostname()  # as both code is running on same pc
-    port = 5400  # socket server port number
+    port = 5000  # socket server port number
 
     client_socket = socket.socket()  # instantiate
     client_socket.connect((host, port))  # connect to the server
 
-    janela = Janela(host)
-    data = client_socket.recv(1024).decode
-    janela.update_assentos(data)
+    janela = create_janela(host)
+    data = client_socket.recv(1024).decode()
+    update_assentos(janela, data)
 
     while True:
         event, values = janela.read()
@@ -40,17 +36,10 @@ def client_program():
 
         client_socket.send("0".encode())
         data = client_socket.recv(1024).decode()
-        print(data)
-        janela.update_assentos(data)
+        print("Atualiza")
+        update_assentos(janela, data)
 
-    # while message.lower().strip() != "bye":
-    #     client_socket.send(message.encode())  # send message
-    #     data = client_socket.recv(1024).decode()  # receive response
-
-    #     print("Received from server: " + data)  # show in terminal
-
-    #     message = input(" -> ")  # again take input
-
+    janela.close()
     client_socket.close()  # close the connection
 
 
