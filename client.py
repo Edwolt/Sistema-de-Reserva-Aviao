@@ -17,10 +17,12 @@ class Janela:
 
 def client_program():
     host = socket.gethostname()  # as both code is running on same pc
-    port = 5000  # socket server port number
+    port = 5400  # socket server port number
 
     client_socket = socket.socket()  # instantiate
     client_socket.connect((host, port))  # connect to the server
+    
+    print(client_socket.recv(1024).decode())
 
     janela = Janela(host)
 
