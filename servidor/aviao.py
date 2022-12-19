@@ -19,7 +19,7 @@ class Poltrona:
 
 
 class Aviao:
-    def __init__(self, n=30):
+    def __init__(self, n=60):
         self.poltronas = [Poltrona() for _ in range(n)]
 
     def livres(self) -> list[bool]:
