@@ -22,12 +22,18 @@ No lado do client em si não foi necessária a implementação de nenhum Semáfo
 ## Dependências
 
 python 3.10
+pysimplegui
 
 ## Instalação
 
 Instalando dependências.
 ```bash
 pip install pysimplegui
+```
+
+Copiando github.
+```bash
+git clone github.com/Edwolt/Sistema-de-Reserva-Aviao/
 ```
 
 ## Utilização
