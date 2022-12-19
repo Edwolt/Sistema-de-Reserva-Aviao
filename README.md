@@ -13,10 +13,12 @@ Projeto final da disciplina de Sistemas Operacionais do segundo semestre de 2022
 O objetivo do nosso projeto é a implementação de um servidor que simula o sistema de reservas de um avião e dos clientes que utilizariam do mesmo.
 
 ### Threads
-Threads são utilizadas para representar o fluxo do uso do servidor por multiplos clientes, todas quais podem acessar e manipular um mesmo conjunto de dados que representa as poltronas do servidor.
+No servidor Threads são utilizadas para representar o fluxo do servidor sendo utilizado por multiplos clientes, todos quais podem acessor e manipular um mesmo conjunto de dados que representam as poltronas do avião. Adicionalmente também existe a Thread timer que possui como função a garantia de uma repetição periódica da atualização do client. 
 
 ### Semáforos
-Caso 2 ou mais clientes busquem reservar uma mesma poltrona em um mesmo período de tempo Semáforos foram implementados e utilizados na resolução do conflito.
+No lado do servidor, caso 2 ou mais clientes busquem reservar uma mesma poltrona em um mesmo período de tempo Semáforos foram implementados e utilizados na resolução do conflito. 
+
+No lado do client em si não foi necessária a implementação de nenhum Semáforo, pois além de manter a periodicidade do processo a única ação da Thread timer é chamar uma função write_event que força o loop principal a se atualizar pois é a única função segura de ser usada fora da Thread principal no PySimpleGui.
 ## Dependências
 
 python 3.10
@@ -30,18 +32,17 @@ pip install pysimplegui
 
 ## Utilização
 
-Ligar o servidor
+Antes de tudo é necessário rodar o servidor.
 ```bash
 python3 server.py
 ```
 
-Para criar um cliente use
+Em sequência o comando abaixo pode ser usado para criar um total de no máximo 10 clientes simultaneamente, cada qual possui uma interface gráfica que facilita e interação e visualização de quais poltronas estão disponíveis. 
+
+Poltronas verdes estão disponíveis, vermelhas ocupadas e azuis representam as poltronas escolhidas pelo cliente.
 ```bash
 python3 client.py
 ```
-O cliente possui uma interface gráfica
-
-Podem ser criados até 10 clientes.
 
 ## Referências
 - [Digital Ocean: Python Socket](https://www.digitalocean.com/community/tutorials/python-socket-programming-server-client)
