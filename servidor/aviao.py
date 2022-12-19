@@ -24,7 +24,7 @@ class Aviao:
 
     def livres(self) -> list[bool]: # retorna lista com as poltronas livres do aviao
         res = []
-        for p in self.poltronas: # checa cada poltrona e coloca nas lista as que estao lires
+        for p in self.poltronas: # checa cada poltrona e coloca nas lista as que estão livres
             p.semaphore.acquire()
             res.append(p.client is None)
             p.semaphore.release()
