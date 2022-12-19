@@ -1,56 +1,74 @@
 import socket
+import threading
 import PySimpleGUI as sg
 
+colunas = 'ABCDEF'
+numero_assentos = 60
+delay_update = 1.0
 
-class Janela:
-    def __init__(self, name):
-        self.layout = [
-            [sg.Text("Assentos")],
-            [sg.Text(".", key=f"-ITEM{i}-") for i in range(30)],
-            [sg.Input()],
-        ]
-        self.window = sg.Window(f"Cliente {name}", self.layout)
+def id_para_poltrona(id):
+    return str(id//6) + colunas[id%6]
 
-    def read(self):
-        return self.window.read()
+def create_janela(name):
+    layout = [[sg.Text("Assentos")]] + [[sg.Button(colunas[i%6], key = ("assento", i), button_color = ('white','green')) for i in range(j,j+3)] + [sg.Text("{:0>2d}".format(1 + (j//6)))] + [sg.Button(colunas[i%6], key = ("assento", i), button_color = ('white','green')) for i in range(j+3,j+6)] for j in range(0,numero_assentos,6)]
+    return sg.Window(f"Cliente {name}", layout, finalize=True)
 
-    def update_assentos(self, data):
-        print(data)
-        for i,valor in enumerate(data):
-            print(i)
-            self.window[f"-ITEM{i}-"].update(valor)
+def thread_update(client_socket, janela):
+    janela.write_event_value("update", "timer")
+    t = threading.Timer(delay_update, thread_update, args=(client_socket,janela))
+    t.daemon = True
+    t.start()
 
+def update_assentos(janela, data):
+    for i, val in enumerate(data):
+        if janela[("assento",i)].ButtonColor != ('white','blue'):
+            janela[("assento",i)].update(button_color= ('white','green') if val == 'L' else ('white','red'))
 
 def client_program():
     host = socket.gethostname()  # as both code is running on same pc
-    port = 5500  # socket server port number
-
+    port = 5100  # socket server port number
+    
     client_socket = socket.socket()  # instantiate
     client_socket.connect((host, port))  # connect to the server
 
-    janela = Janela(host)
+    janela = create_janela(host)
     data = client_socket.recv(1024).decode()
-    janela.update_assentos(data)
+    update_assentos(janela, data)
+    
+    t = threading.Timer(delay_update, thread_update, args=(client_socket,janela))
+    t.daemon = True
+    t.start()
 
     while True:
         event, values = janela.read()
+
         if event == sg.WIN_CLOSED or values == "Exit":
-            client_socket.send("2".encode())
+            client_socket.send("Q".encode())
             break
+
+        if event[0] == "assento":
+            # Assento Vazio
+            if janela[event].ButtonColor == ('white','green'):
+                client_socket.send("1{}".format(event[1]).encode())
+                data = client_socket.recv(1024).decode()
+                if data[0] == '1':
+                    janela[event].update(button_color = ('white','blue'))
+
+            # Assento Ocupado por outro Cliente
+            elif janela[event].ButtonColor == ('white','red'):
+                pass
+            
+            # Assento Ocupado pelo próprio Cliente
+            else:    
+                client_socket.send("2{}".format(event[1]).encode())
+                data = client_socket.recv(1024).decode()
+                janela[event].update(button_color = ('white','green'))
 
         client_socket.send("0".encode())
         data = client_socket.recv(1024).decode()
-        print(data)
-        janela.update_assentos(data)
+        update_assentos(janela, data)
 
-    # while message.lower().strip() != "bye":
-    #     client_socket.send(message.encode())  # send message
-    #     data = client_socket.recv(1024).decode()  # receive response
-
-    #     print("Received from server: " + data)  # show in terminal
-
-    #     message = input(" -> ")  # again take input
-
+    janela.close()
     client_socket.close()  # close the connection
 
 
