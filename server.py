@@ -27,6 +27,7 @@ def server_thread(conn, address, identificador, aviao):
         data = conn.recv(1024).decode()
         data = str(data)
         print(f"from {identificador}: {data}")
+        
         if data[0] == '0':
             data = bool_to_data(aviao.livres()).encode()
         elif data[0] == '1':
@@ -41,11 +42,11 @@ def server_thread(conn, address, identificador, aviao):
 
 def server_program():
     aviao = Aviao()
-
+    
     # get the hostname
     host = socket.gethostname()
-    port = 5000  # initiate port no above 1024
-
+    port = 5500  # initiate port no above 1024
+    
     server_socket = socket.socket()  # get instance
     # look closely. The bind() function takes tuple as argument
     server_socket.bind((host, port))  # bind host address and port together
