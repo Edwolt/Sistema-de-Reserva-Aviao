@@ -41,7 +41,7 @@ python3 client.py
 ```
 O cliente possui uma interface gráfica
 
-Pode se criar quantos clientes quiser
+Podem ser criados até 10 clientes.
 
 ## Referências
 - [Digital Ocean: Python Socket](https://www.digitalocean.com/community/tutorials/python-socket-programming-server-client)
