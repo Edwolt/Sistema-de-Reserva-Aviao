@@ -33,7 +33,8 @@ pip install pysimplegui
 
 Copiando github.
 ```bash
-git clone github.com/Edwolt/Sistema-de-Reserva-Aviao/
+git clone https://github.com/Edwolt/Sistema-de-Reserva-Aviao
+cd Sistema-de-Reserva-Aviao
 ```
 
 ## Utilização
