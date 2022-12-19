@@ -25,7 +25,7 @@ python 3.10
 
 ## Instalação
 
-Instalando dependências
+Instalando dependências.
 ```bash
 pip install pysimplegui
 ```
